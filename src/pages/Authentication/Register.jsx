@@ -3,15 +3,15 @@ import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router';
 import SocialLogin from './SocialLogin';
 import axios from 'axios';
-// import useAxios from '../../../hooks/useAxios';
 import { AuthContext } from '../../provider/AuthProvider';
+import useAxios from '../../hooks/useAxios';
 
 const Register = () => {
     
     const { register, handleSubmit, formState: { errors } } = useForm();
     const { createUser, updateUserProfile } = use(AuthContext);
     const [profilePic, setProfilePic] = useState('');
-    //const axiosInstance = useAxios();
+    const axiosInstance = useAxios();
     const location = useLocation();
     const navigate = useNavigate();
     const from = location.state?.from || '/';
@@ -32,8 +32,8 @@ const Register = () => {
                     last_log_in: new Date().toISOString()
                 }
 
-                // const userRes = await axiosInstance.post('/users', userInfo);
-                // console.log(userRes.data);
+                const userRes = await axiosInstance.post('/users', userInfo);
+                console.log(userRes.data);
 
                 // update user profile in firebase
                 const userProfile = {

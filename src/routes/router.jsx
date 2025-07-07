@@ -7,6 +7,10 @@ import Register from "../pages/Authentication/Register";
 import DashboardLayout from "../layouts/Dashboardlayout";
 import PrivateRoute from "../provider/PrivateRoute";
 import ErrorPage from "../components/ErrorPage";
+import AddArticle from "../pages/AddArticle/AddArticle";
+import DashboardHome from "../pages/Dashboard/DashboardHome";
+import AddPublisher from "../pages/AddPublisher/AddPublisher";
+import AllArticles from "../pages/AllArticle/AllArticles";
 
 const router = createBrowserRouter([
   {
@@ -22,86 +26,94 @@ const router = createBrowserRouter([
         // hydrateFallbackElement: (
         //   <span className="loading loading-bars loading-xl"></span>
         // ),
-         element: <Home></Home>,
+        element: <Home></Home>,
       },
 
-    //   {
-    //     path: "addFood",
-    //     element: <AddFood></AddFood>,
-    //   },
+      {
+        path: "add-articles",
+        element: <AddArticle></AddArticle>,
+      },
 
-    //   {
-    //     path: "allFood",
+      {
+        path: "all-articles",
+        element: <AllArticles></AllArticles>,
+      },
 
-    //     loader: () => fetch("https://restuarent-server-sepia.vercel.app/foods"),
-    //     hydrateFallbackElement: (
-    //       <span className="loading loading-bars loading-xl"></span>
-    //     ),
-    //     element: <AllFoods></AllFoods>,
-    //   },
+      //   {
+      //     path: "addFood",
+      //     element: <AddFood></AddFood>,
+      //   },
 
-    //   {
-    //     path: "/foodDetails/:id",
-    //     loader: ({ params }) =>
-    //       fetch(`https://restuarent-server-sepia.vercel.app/foodDetails/${params.id}`),
-    //     hydrateFallbackElement: (
-    //       <span className="loading loading-bars loading-xl"></span>
-    //     ),
-    //     element: (
-    //       <PrivateRoute>
-    //         <FoodDetails></FoodDetails>
-    //       </PrivateRoute>
-    //     ),
-    //   },
+      //   {
+      //     path: "allFood",
 
-    //   {
-    //     path: "/foodPurchase/:id",
-    //     loader: ({ params }) =>
-    //       fetch(`https://restuarent-server-sepia.vercel.app/foodPurchase/${params.id}`),
-    //     hydrateFallbackElement: (
-    //       <span className="loading loading-bars loading-xl"></span>
-    //     ),
-    //     element: (
-    //       <PrivateRoute>
-    //         <FoodPurchase></FoodPurchase>
-    //       </PrivateRoute>
-    //     ),
-    //   },
+      //     loader: () => fetch("https://restuarent-server-sepia.vercel.app/foods"),
+      //     hydrateFallbackElement: (
+      //       <span className="loading loading-bars loading-xl"></span>
+      //     ),
+      //     element: <AllFoods></AllFoods>,
+      //   },
 
-    //   {
-    //     path: "/my-food",
-    //     //path: 'my-orders/:email',
-    //     //   loader: ({ params }) => fetch(`https://library-server-self-theta.vercel.app/my-orders/${params.email}`),
-    //     // hydrateFallbackElement: (
-    //     //   <span className="loading loading-bars loading-xl"></span>
-    //     // ),
-    //     element: (
-    //       <PrivateRoute>
-    //         <MyFood></MyFood>
-    //       </PrivateRoute>
-    //     ),
-    //   },
+      //   {
+      //     path: "/foodDetails/:id",
+      //     loader: ({ params }) =>
+      //       fetch(`https://restuarent-server-sepia.vercel.app/foodDetails/${params.id}`),
+      //     hydrateFallbackElement: (
+      //       <span className="loading loading-bars loading-xl"></span>
+      //     ),
+      //     element: (
+      //       <PrivateRoute>
+      //         <FoodDetails></FoodDetails>
+      //       </PrivateRoute>
+      //     ),
+      //   },
 
-      
+      //   {
+      //     path: "/foodPurchase/:id",
+      //     loader: ({ params }) =>
+      //       fetch(`https://restuarent-server-sepia.vercel.app/foodPurchase/${params.id}`),
+      //     hydrateFallbackElement: (
+      //       <span className="loading loading-bars loading-xl"></span>
+      //     ),
+      //     element: (
+      //       <PrivateRoute>
+      //         <FoodPurchase></FoodPurchase>
+      //       </PrivateRoute>
+      //     ),
+      //   },
 
-    //   {
-    //     path: "/updateFood/:id",
-    //     loader: ({ params }) =>
-    //       fetch(`https://restuarent-server-sepia.vercel.app/updateFood/${params.id}`),
-    //     hydrateFallbackElement: (
-    //       <span className="loading loading-bars loading-xl"></span>
-    //     ),
-    //     element: <UpdateFood></UpdateFood>,
-    //   },
+      //   {
+      //     path: "/my-food",
+      //     //path: 'my-orders/:email',
+      //     //   loader: ({ params }) => fetch(`https://library-server-self-theta.vercel.app/my-orders/${params.email}`),
+      //     // hydrateFallbackElement: (
+      //     //   <span className="loading loading-bars loading-xl"></span>
+      //     // ),
+      //     element: (
+      //       <PrivateRoute>
+      //         <MyFood></MyFood>
+      //       </PrivateRoute>
+      //     ),
+      //   },
 
-    //   {
-    //     path: "/myFood-post",
-    //     element: (
-    //       <PrivateRoute>
-    //         <MyPost></MyPost>
-    //       </PrivateRoute>
-    //     ),
-    //   },
+      //   {
+      //     path: "/updateFood/:id",
+      //     loader: ({ params }) =>
+      //       fetch(`https://restuarent-server-sepia.vercel.app/updateFood/${params.id}`),
+      //     hydrateFallbackElement: (
+      //       <span className="loading loading-bars loading-xl"></span>
+      //     ),
+      //     element: <UpdateFood></UpdateFood>,
+      //   },
+
+      //   {
+      //     path: "/myFood-post",
+      //     element: (
+      //       <PrivateRoute>
+      //         <MyPost></MyPost>
+      //       </PrivateRoute>
+      //     ),
+      //   },
     ],
   },
 
@@ -129,42 +141,47 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
-    //   {
-    //     index: true, // Default route for /dashboard
-    //     element: <DashboardHome></DashboardHome>,
-    //   },
-    //   {
-    //     path: "add-plants",
-    //     element: <AddPlants></AddPlants>,
-    //   },
-    //   {
-    //     path: "update-profile",
-    //     element: <UpdateProfile></UpdateProfile>,
-    //   },
+      {
+        index: true, // Default route for /dashboard
+        element: <DashboardHome></DashboardHome>,
+      },
+      {
+        path: "add-publishers",
+        element: <AddPublisher></AddPublisher>,
+      },
 
-    //   {
-    //     path: "my-plants/:email",
-    //     loader: ({ params }) =>
-    //       fetch(
-    //         `https://plant-tracker-server.vercel.app/plants/${params.email}`
-    //       ),
-    //     hydrateFallbackElement: (
-    //       <span className="loading loading-bars loading-xl"></span>
-    //     ),
-    //     element: <MyPlants />,
-    //   },
+      //   {
+      //     path: "add-plants",
+      //     element: <AddPlants></AddPlants>,
+      //   },
+      //   {
+      //     path: "update-profile",
+      //     element: <UpdateProfile></UpdateProfile>,
+      //   },
 
-    //   {
-    //     path: "all-plants",
-    //     loader: () => fetch("https://plant-tracker-server.vercel.app/plants"),
-    //     hydrateFallbackElement: (
-    //       <span className="loading loading-bars loading-xl"></span>
-    //     ),
-    //     element: <AllPlantDash></AllPlantDash>,
-    //   },
+      //   {
+      //     path: "my-plants/:email",
+      //     loader: ({ params }) =>
+      //       fetch(
+      //         `https://plant-tracker-server.vercel.app/plants/${params.email}`
+      //       ),
+      //     hydrateFallbackElement: (
+      //       <span className="loading loading-bars loading-xl"></span>
+      //     ),
+      //     element: <MyPlants />,
+      //   },
+
+      //   {
+      //     path: "all-plants",
+      //     loader: () => fetch("https://plant-tracker-server.vercel.app/plants"),
+      //     hydrateFallbackElement: (
+      //       <span className="loading loading-bars loading-xl"></span>
+      //     ),
+      //     element: <AllPlantDash></AllPlantDash>,
+      //   },
     ],
   },
-  
+
   {
     path: "/*",
     element: <ErrorPage></ErrorPage>,

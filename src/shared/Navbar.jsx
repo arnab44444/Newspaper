@@ -175,16 +175,29 @@ const Navbar = () => {
               Home
             </NavLink>
           </li>
+
           <li>
             <NavLink
-              to="/all-plants"
+              to="/add-articles"
               className={({ isActive }) =>
                 isActive
                   ? " text-indigo-300 dark:text-green-400"
                   : " text-gray-600 dark:text-gray-300"
               }
             >
-              All Plants
+              Add Articles
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/all-articles"
+              className={({ isActive }) =>
+                isActive
+                  ? " text-indigo-300 dark:text-green-400"
+                  : " text-gray-600 dark:text-gray-300"
+              }
+            >
+              All Articles
             </NavLink>
           </li>
 

@@ -6,8 +6,7 @@ import SocialLogin from "./SocialLogin";
 import { toast } from "react-toastify";
 
 const Login = () => {
-
-    const [error, setError] = useState("");
+  const [error, setError] = useState("");
 
   const {
     register,
@@ -19,27 +18,27 @@ const Login = () => {
   const navigate = useNavigate();
   const from = location.state?.from || "/";
 
-  const onSubmit = data => {
-      signInUser(data.email, data.password)
-          .then(result => {
-              console.log(result.user);
-              navigate(from);
-          })
-          .catch((error) => {
+  const onSubmit = (data) => {
+    signInUser(data.email, data.password)
+      .then((result) => {
+        console.log(result.user);
+        navigate(from);
+      })
+      .catch((error) => {
         //console.log(error.message);
         const errorCode = error.code;
         setError(errorCode);
         toast(errorCode);
       });
-  }
+  };
 
   return (
     <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
       <div className="card-body">
         <h1 className="text-5xl font-bold">Please Login</h1>
-        <form onSubmit={handleSubmit(onSubmit)}>
 
         {/* <form onSubmit={handleSubmit}> */}
+        <form onSubmit={handleSubmit(onSubmit)}>
           <fieldset className="fieldset">
             <label className="label">Email</label>
             <input

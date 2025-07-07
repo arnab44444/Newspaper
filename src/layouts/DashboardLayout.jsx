@@ -86,6 +86,17 @@ const DashboardLayout = () => {
             </NavLink>
 
             <NavLink
+              to="/dashboard/add-publishers"
+              className={({ isActive }) =>
+                `px-4 py-2 rounded-md flex items-center gap-3 hover:bg-indigo-50 hover:text-black ${
+                  isActive ? activeClass : ""
+                }`
+              }
+            >
+              <FaSeedling /> Add Publishers
+            </NavLink>
+
+            {/* <NavLink
               to="/dashboard/add-plants"
               className={({ isActive }) =>
                 `px-4 py-2 rounded-md flex items-center gap-3 hover:bg-indigo-50 hover:text-black ${
@@ -116,7 +127,7 @@ const DashboardLayout = () => {
               }
             >
               My Plants
-            </NavLink>
+            </NavLink> */}
           </div>
 
           {/* Bottom Buttons */}
