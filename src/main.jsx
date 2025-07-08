@@ -5,6 +5,9 @@ import AuthProvider from './provider/AuthProvider.jsx'
 import { ToastContainer } from 'react-toastify'
 import { RouterProvider } from 'react-router'
 import router from './routes/router.jsx'
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 
 // ✅ TanStack Query Setup
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'

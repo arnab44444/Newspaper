@@ -57,7 +57,7 @@ const AddArticle = () => {
     axiosSecure.get("/publishers")
       .then(res => setPublishers(res.data))
       .catch(err => console.error("Publisher fetch failed", err));
-  }, []);
+  }, [axiosSecure]);
 
   const onSubmit = async (data) => {
     const imageFile = data.image[0];
@@ -90,17 +90,23 @@ const AddArticle = () => {
       await axiosSecure.post("/articles", articleData);
       toast.success("Article submitted for review!");
       reset();
-      //navigate("/my-articles");
+      navigate("/my-articles");
 
     } catch (err) {
-      toast.error("Failed to submit article");
+      if (err.response?.status === 403) {
+        toast.error("⚠️ Normal users can only post 1 article. Upgrade to premium.");
+        //navigate("/subscription");
+      } else {
+        toast.error("❌ Failed to submit article.");
+      }
       console.error(err);
     }
+  
   };
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-semibold mb-6 text-center text-cyan-600">Add New Article</h2>
+      <h2 className="text-3xl font-semibold mb-6 text-center text-cyan-700">Add New Article</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 
         <input
@@ -145,7 +151,7 @@ const AddArticle = () => {
           rows={5}
         />
 
-        <button type="submit" className="w-full bg-cyan-500 hover:bg-cyan-600 text-white py-2 rounded">
+        <button type="submit" className="w-full bg-cyan-700 hover:bg-cyan-900 text-white py-2 rounded">
           Submit Article
         </button>
       </form>

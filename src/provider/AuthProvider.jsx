@@ -9,6 +9,7 @@ import {
 } from "firebase/auth";
 import React, {  createContext, useEffect, useState } from "react";
 import { auth } from "../firebase.init";
+import axios from "axios";
 
 
 export const AuthContext = createContext();
@@ -76,6 +77,18 @@ const AuthProvider = ({ children }) => {
         //console.log('has current user inside useEffect', currentUser);
         setUser(currentUser);
         setLoading(false);
+
+        if(currentUser?.email){
+          const userData = {
+            email: currentUser.email};
+
+            axios.post('http://localhost:5000/jwt', userData)
+            .then(res =>{
+              console.log('jwt token', res.data.token);
+              const token = res.data.token;
+              localStorage.setItem('access-token', token);
+            })
+        }
       } 
       
       else {

@@ -1,14 +1,21 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useParams } from "react-router";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
-import { FaClock, FaEye, FaUser, FaTag, FaCheckCircle } from "react-icons/fa";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { AuthContext } from "../../provider/AuthProvider";
+import { FaClock, FaUser, FaEye } from "react-icons/fa";
 
 const ArticleDetails = () => {
   const { id } = useParams();
   const axiosSecure = useAxiosSecure();
+  const { user } = useContext(AuthContext);
 
-  const { data: article, isPending, isError } = useQuery({
+  const {
+    data: article,
+    isPending,
+    isError,
+    refetch,
+  } = useQuery({
     queryKey: ["article", id],
     queryFn: async () => {
       const res = await axiosSecure.get(`/articles/${id}`);
@@ -16,61 +23,79 @@ const ArticleDetails = () => {
     },
   });
 
-  if (isPending) return <p className="text-center py-10">Loading...</p>;
-  if (isError || !article) return <p className="text-center py-10 text-red-500">Failed to load article.</p>;
+  useEffect(() => {
+    if (!article || !user || !article.authorEmail || !user.email) return;
+
+    const viewKey = `viewed_${id}`;
+    const lastViewed = localStorage.getItem(viewKey);
+    const now = Date.now();
+    const oneHour = 60 * 60 * 1000;
+
+    const isAuthor = user.email === article.authorEmail;
+    const recentlyViewed = lastViewed && now - parseInt(lastViewed) < oneHour;
+
+    if (!isAuthor && !recentlyViewed) {
+      axiosSecure.patch(`/articles/views/${id}`).then(() => {
+        localStorage.setItem(viewKey, now.toString());
+        refetch();
+      });
+    }
+  }, [article?.authorEmail, user?.email, id, axiosSecure, refetch]);
+
+  if (isPending) return <p className="text-center py-10 text-gray-600">Loading article...</p>;
+  if (isError || !article) return <p className="text-center py-10 text-red-600">Article not found.</p>;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10">
-      <div className="bg-white shadow-xl rounded-lg overflow-hidden border border-gray-200">
+    <div className="max-w-4xl mx-auto px-4 py-12">
+      <article className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
         {/* Image */}
-        <img src={article.image} alt={article.title} className="w-full h-64 object-cover" />
+        <img
+          src={article.image}
+          alt={article.title}
+          className="w-full h-72 md:h-96 object-cover rounded-t-xl"
+          loading="lazy"
+        />
 
-        {/* Body */}
-        <div className="p-6 space-y-4">
+        <div className="p-8">
           {/* Title */}
-          <h2 className="text-3xl font-bold text-gray-800 flex items-center gap-2">
+          <h1 className="text-4xl font-extrabold text-gray-900 leading-tight mb-6">
             {article.title}
-            {article.isPremium && (
-              <span className="text-sm bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-2 py-1 rounded-full ml-2">
-                Premium
-              </span>
-            )}
-          </h2>
+          </h1>
 
-          {/* Meta Info */}
-          <div className="text-sm text-gray-500 flex flex-wrap items-center gap-4">
-            <span className="flex items-center gap-1">
-              <FaUser /> {article.authorName}
-            </span>
-            <span className="flex items-center gap-1">
-              <FaClock /> {new Date(article.postedDate).toLocaleDateString()}
-            </span>
-            <span className="flex items-center gap-1">
-              <FaEye /> {article.views} views
-            </span>
-            <span className="flex items-center gap-1">
-              <FaCheckCircle className="text-green-500" />
-              {article.publisher}
-            </span>
-          </div>
-
-          {/* Tags */}
-          {article.tags?.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-2">
-              {article.tags.map((tag, idx) => (
-                <span key={idx} className="bg-cyan-100 text-cyan-700 px-3 py-1 text-xs rounded-full">
-                  <FaTag className="inline mr-1" /> {tag}
-                </span>
-              ))}
+          {/* Meta Data */}
+          <div className="flex flex-wrap items-center gap-6 text-gray-500 text-sm md:text-base mb-8">
+            <div className="flex items-center gap-2">
+              <FaUser className="text-cyan-600" />
+              <span className="font-medium text-gray-700">{article.authorName}</span>
             </div>
-          )}
+
+            <div className="flex items-center gap-2">
+              <FaClock className="text-cyan-600" />
+              <time dateTime={article.postedDate} className="font-medium text-gray-700">
+                {new Date(article.postedDate).toLocaleDateString(undefined, {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </time>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <FaEye className="text-cyan-600" />
+              <span className="font-medium text-gray-700">{article.views} views</span>
+            </div>
+
+            <div className="ml-auto text-cyan-700 font-semibold text-sm md:text-base">
+              Publisher: {article.publisher}
+            </div>
+          </div>
 
           {/* Description */}
-          <div className="text-gray-700 leading-relaxed mt-4 text-justify">
-            {article.description}
-          </div>
+          <section className="prose prose-cyan max-w-none text-justify text-gray-800 leading-relaxed">
+            <p>{article.description}</p>
+          </section>
         </div>
-      </div>
+      </article>
     </div>
   );
 };

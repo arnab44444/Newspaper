@@ -81,21 +81,38 @@ const PaymentForm = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white shadow rounded">
-      <h2 className="text-xl font-bold mb-4 text-center">Complete Your Payment</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <CardElement className="p-3 border rounded" />
+  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 via-white to-gray-100 px-4">
+    <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 border border-gray-200">
+      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+        💳 Complete Your Payment
+      </h2>
+
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div>
+          <label className="block mb-1 text-sm font-medium text-gray-700">
+            Card Details
+          </label>
+          <div className="p-3 border border-gray-300 rounded focus-within:ring-2 focus-within:ring-cyan-500 transition">
+            <CardElement />
+          </div>
+        </div>
+
         <button
           type="submit"
           disabled={!stripe}
-          className="w-full py-2 bg-cyan-600 text-white rounded hover:bg-cyan-700"
+          className="w-full py-2 bg-cyan-700 text-white font-semibold rounded-md hover:bg-cyan-800 transition"
         >
           Pay ${amount}
         </button>
-        {error && <p className="text-red-600 text-sm">{error}</p>}
+
+        {error && (
+          <p className="text-red-600 text-sm text-center">{error}</p>
+        )}
       </form>
     </div>
-  );
+  </div>
+);
+
 };
 
 export default PaymentForm;

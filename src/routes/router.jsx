@@ -8,14 +8,19 @@ import DashboardLayout from "../layouts/Dashboardlayout";
 import PrivateRoute from "../provider/PrivateRoute";
 import ErrorPage from "../components/ErrorPage";
 import AddArticle from "../pages/AddArticle/AddArticle";
-import DashboardHome from "../pages/Dashboard/DashboardHome";
-import AddPublisher from "../pages/AddPublisher/AddPublisher";
+import DashboardHome from "../pages/Dashboard/home/DashboardHome";
+import AddPublisher from "../pages/Dashboard/AddPublisher/AddPublisher";
 import AllArticles from "../pages/AllArticle/AllArticles";
 import SubscriptionSection from "../pages/Subscription/SubscriptionSection";
 import Payment from "../pages/Payment/Payment";
 import PremiumArticles from "../pages/PremiumArticle/PremiumArticles";
 import MyArticles from "../pages/MyArticles/MyArticles";
 import ArticleDetails from "../pages/MyArticles/ArticleDetails";
+import UpdateArticle from "../pages/MyArticles/UpdateArticle";
+import AllUsers from "../pages/Dashboard/AllUsers/AllUsers";
+import AdminAllArtcile from "../pages/Dashboard/AdminAllArticle/AdminAllArtcile";
+import UserProfile from "../pages/UserProfile/UserProfile";
+import Forbidden from "../components/Forbidden";
 
 const router = createBrowserRouter([
   {
@@ -33,10 +38,14 @@ const router = createBrowserRouter([
         // ),
         element: <Home></Home>,
       },
+      {
+        path: 'forbidden',
+        element: <Forbidden></Forbidden>
+      },
 
       {
         path: "add-articles",
-        element: <AddArticle></AddArticle>,
+        element: <PrivateRoute><AddArticle></AddArticle></PrivateRoute>,
       },
 
       {
@@ -46,7 +55,7 @@ const router = createBrowserRouter([
 
       {
         path: "subscription",
-        element: <SubscriptionSection></SubscriptionSection>,
+        element: <PrivateRoute><SubscriptionSection></SubscriptionSection></PrivateRoute>,
       },
       {
         path: "payment/:email",
@@ -54,16 +63,24 @@ const router = createBrowserRouter([
       },
       {
         path: "premium-article",
-        element: <PremiumArticles></PremiumArticles>,
+        element: <PrivateRoute><PremiumArticles></PremiumArticles></PrivateRoute>,
       },
       {
         path: "my-articles",
-        element: <MyArticles></MyArticles>,
+        element: <PrivateRoute><MyArticles></MyArticles></PrivateRoute>,
       },
       {
         path: "/articles/:id",
-        element: <ArticleDetails></ArticleDetails>,
+        element: <PrivateRoute><ArticleDetails></ArticleDetails></PrivateRoute>,
       },
+      {
+        path: "/update-article/:id",
+        element: <UpdateArticle></UpdateArticle>,
+      },
+      {
+        path: '/user-profile',
+        element: <PrivateRoute><UserProfile></UserProfile></PrivateRoute>,
+      }
 
       //   {
       //     path: "addFood",
@@ -175,6 +192,14 @@ const router = createBrowserRouter([
         path: "add-publishers",
         element: <AddPublisher></AddPublisher>,
       },
+      {
+        path: "all-users",
+        element: <AllUsers></AllUsers>
+      },
+      {
+        path: "admin-all-articles",
+        element: <AdminAllArtcile></AdminAllArtcile>,
+      }
 
       //   {
       //     path: "add-plants",

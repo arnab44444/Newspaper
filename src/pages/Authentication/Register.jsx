@@ -1,123 +1,182 @@
-import React, { use, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Link, useLocation, useNavigate } from 'react-router';
-import SocialLogin from './SocialLogin';
-import axios from 'axios';
-import { AuthContext } from '../../provider/AuthProvider';
-import useAxios from '../../hooks/useAxios';
+import React, { useState, useContext } from "react";
+import { useForm } from "react-hook-form";
+import { Link, useLocation, useNavigate } from "react-router";
+import axios from "axios";
+import { AuthContext } from "../../provider/AuthProvider";
+import useAxios from "../../hooks/useAxios";
+import SocialLogin from "./SocialLogin";
+import { toast } from "react-toastify";
 
 const Register = () => {
-    
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const { createUser, updateUserProfile } = use(AuthContext);
-    const [profilePic, setProfilePic] = useState('');
-    const axiosInstance = useAxios();
-    const location = useLocation();
-    const navigate = useNavigate();
-    const from = location.state?.from || '/';
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const { createUser, updateUserProfile } = useContext(AuthContext);
+  const [profilePic, setProfilePic] = useState("");
+  const axiosInstance = useAxios();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from || "/";
 
-    const onSubmit = data => {
+  const onSubmit = async (data) => {
+    // Password validation check
+    const password = data.password;
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    const hasNumber = /\d/.test(password);
 
-        console.log(data);
-
-        createUser(data.email, data.password)
-            .then(async (result) => {
-                console.log(result.user);
-
-                // update userinfo in the database
-                const userInfo = {
-                    email: data.email,
-                    role: 'user', // default role
-                    created_at: new Date().toISOString(),
-                    last_log_in: new Date().toISOString()
-                }
-
-                const userRes = await axiosInstance.post('/users', userInfo);
-                console.log(userRes.data);
-
-                // update user profile in firebase
-                const userProfile = {
-                    displayName: data.name,
-                    photoURL: profilePic
-                }
-                updateUserProfile(userProfile)
-                    .then(() => {
-                        console.log('profile name pic updated');
-                        navigate(from);
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    })
-
-            })
-            .catch(error => {
-                console.error(error);
-            })
+    if (!hasUppercase || !hasSpecialChar || !hasNumber) {
+      toast.error("Password must include an uppercase letter, special character, and number.");
+      return;
     }
 
-    const handleImageUpload = async (e) => {
-        const image = e.target.files[0];
-        console.log(image)
+    try {
+      const result = await createUser(data.email, data.password);
+      const user = result.user;
 
-        const formData = new FormData();
-        formData.append('image', image);
+      const userInfo = {
+        email: data.email,
+        name: data.name,
+        photoURL: profilePic,
+        role: "user",
+        created_at: new Date().toISOString(),
+        last_log_in: new Date().toISOString(),
+      };
 
+      await axiosInstance.post("/users", userInfo);
 
-        const imagUploadUrl = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_upload_key}`
-        const res = await axios.post(imagUploadUrl, formData)
+      await updateUserProfile({
+        displayName: data.name,
+        photoURL: profilePic,
+      });
 
-        setProfilePic(res.data.data.url);
-
+      toast.success("Registration successful!");
+      navigate(from);
+    } catch (error) {
+      toast.error(error.message);
+      console.error(error);
     }
+  };
 
-    return (
+  const handleImageUpload = async (e) => {
+    const image = e.target.files[0];
+    const formData = new FormData();
+    formData.append("image", image);
 
-        <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-            <div className="card-body">
-                <h1 className="text-5xl font-bold">Create Account</h1>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <fieldset className="fieldset">
-                        {/* name field */}
-                        <label className="label">Your Name</label>
-                        <input type="text"
-                            {...register('name', { required: true })}
-                            className="input" placeholder="Your Name" />
-                        {
-                            errors.email?.type === 'required' && <p className='text-red-500'>Name is required</p>
-                        }
-                        {/* name field */}
-                        <label className="label">Your Name</label>
-                        <input type="file"
-                            onChange={handleImageUpload}
-                            className="input" placeholder="Your Profile picture" />
+    const imgUploadUrl = `https://api.imgbb.com/1/upload?key=${
+      import.meta.env.VITE_image_upload_key
+    }`;
 
-                        {/* email field */}
-                        <label className="label">Email</label>
-                        <input type="email"
-                            {...register('email', { required: true })}
-                            className="input" placeholder="Email" />
-                        {
-                            errors.email?.type === 'required' && <p className='text-red-500'>Email is required</p>
-                        }
-                        {/* password field*/}
-                        <label className="label">Password</label>
-                        <input type="password" {...register('password', { required: true, minLength: 6 })} className="input" placeholder="Password" />
-                        {
-                            errors.password?.type === 'required' && <p className='text-red-500'>Password is required</p>
-                        }
-                        {
-                            errors.password?.type === 'minLength' && <p className='text-red-500'>Password must be 6 characters or longer</p>
-                        }
+    try {
+      const res = await axios.post(imgUploadUrl, formData);
+      setProfilePic(res.data.data.url);
+    } catch (err) {
+      console.error("Image upload failed", err);
+      toast.error("Image upload failed");
+    }
+  };
 
-                        <div><a className="link link-hover">Forgot password?</a></div>
-                        <button className="btn btn-primary text-black mt-4">Register</button>
-                    </fieldset>
-                    <p><small>Already have an account? <Link className="btn btn-link" to="/login">Login</Link></small></p>
-                </form>
-                <SocialLogin></SocialLogin>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-cyan-100 via-white to-cyan-100 flex items-center justify-center p-4">
+      <div className="card bg-white w-full max-w-md shadow-2xl border border-cyan-300">
+        <div className="card-body px-6 py-8">
+          <h2 className="text-3xl font-extrabold text-center text-cyan-700 mb-6">
+            Create Account
+          </h2>
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {/* Name */}
+            <div>
+              <label className="label font-semibold">Your Name</label>
+              <input
+                type="text"
+                {...register("name", { required: true })}
+                placeholder="Your Name"
+                className="input input-bordered w-full"
+              />
+              {errors.name && (
+                <p className="text-red-500 text-sm mt-1">Name is required</p>
+              )}
             </div>
+
+            {/* Profile Image */}
+            <div>
+              <label className="label font-semibold">Profile Picture</label>
+              <input
+                type="file"
+                onChange={handleImageUpload}
+                className="file-input file-input-bordered w-full"
+              />
+            </div>
+
+            {/* Email */}
+            <div>
+              <label className="label font-semibold">Email</label>
+              <input
+                type="email"
+                {...register("email", { required: true })}
+                placeholder="Enter your email"
+                className="input input-bordered w-full"
+              />
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">Email is required</p>
+              )}
+            </div>
+
+            {/* Password */}
+            <div>
+              <label className="label font-semibold">Password</label>
+              <input
+                type="password"
+                {...register("password", {
+                  required: true,
+                  minLength: 6,
+                })}
+                placeholder="Enter password"
+                className="input input-bordered w-full"
+              />
+              {errors.password?.type === "required" && (
+                <p className="text-red-500 text-sm mt-1">
+                  Password is required
+                </p>
+              )}
+              {errors.password?.type === "minLength" && (
+                <p className="text-red-500 text-sm mt-1">
+                  Must be at least 6 characters
+                </p>
+              )}
+              <ul className="text-xs text-gray-600 mt-2 list-disc ml-4">
+                <li>Must include at least 1 capital letter</li>
+                <li>Must include at least 1 special character</li>
+                <li>Must include at least 1 number</li>
+              </ul>
+            </div>
+
+            {/* Submit */}
+            <button
+              type="submit"
+              className="btn w-full bg-cyan-600 hover:bg-cyan-700 text-white text-lg"
+            >
+              Register
+            </button>
+          </form>
+
+          {/* Already registered */}
+          <p className="text-center text-sm mt-4">
+            Already have an account?{" "}
+            <Link to="/auth/login" className="text-cyan-600 hover:underline font-medium">
+              Login
+            </Link>
+          </p>
+
+          <div className="divider mt-6 mb-2">OR</div>
+          <SocialLogin />
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default Register;
