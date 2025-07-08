@@ -1,9 +1,23 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, use } from "react";
 import { Link, NavLink } from "react-router";
 import { AuthContext } from "../provider/AuthProvider";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const Navbar = () => {
-  const { user, signOutUser, setUser } = useContext(AuthContext);
+  const { user, signOutUser, setUser } = use(AuthContext);
+
+  const [userWithRole, setUserWithRole] = useState(null);
+
+  const axiosSecure = useAxiosSecure();
+
+useEffect(() => {
+  if (user?.email) {
+    axiosSecure.get(`/users/${user.email}`).then(res => {
+      setUserWithRole(res.data); // contains role
+    });
+  }
+}, [user]);
+
 
   // Theme state
   const [theme, setTheme] = useState("light");
@@ -203,6 +217,46 @@ const Navbar = () => {
 
           <li>
             <NavLink
+              to="/subscription"
+              className={({ isActive }) =>
+                isActive
+                  ? " text-indigo-300 dark:text-green-400"
+                  : " text-gray-600 dark:text-gray-300"
+              }
+            >
+              Subscription
+            </NavLink>
+          </li>
+
+
+          <li>
+            <NavLink
+              to="/premium-article"
+              className={({ isActive }) =>
+                isActive
+                  ? " text-indigo-300 dark:text-green-400"
+                  : " text-gray-600 dark:text-gray-300"
+              }
+            >
+              Premium Articles
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink
+              to="/my-articles"
+              className={({ isActive }) =>
+                isActive
+                  ? " text-indigo-300 dark:text-green-400"
+                  : " text-gray-600 dark:text-gray-300"
+              }
+            >
+              My Articles
+            </NavLink>
+          </li>
+
+          {/* <li>
+            <NavLink
               to="/aboutUs"
               className={({ isActive }) =>
                 isActive
@@ -238,23 +292,23 @@ const Navbar = () => {
             >
               Blog
             </NavLink>
-          </li>
+          </li> */}
 
-          {user && (
-            <>
-              <li>
-                <NavLink
-                  to="/dashboard"
-                  className={({ isActive }) =>
-                    isActive
-                      ? " text-indigo-300 dark:text-green-400"
-                      : " text-gray-600 dark:text-gray-300"
-                  }
-                >
-                  Dashboard
-                </NavLink>
-              </li>
-            </>
+          {/* {user?.role === "admin" && ( */}
+          {userWithRole?.role === 'admin' && (
+
+            <li>
+              <NavLink
+                to="/dashboard"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-indigo-300 dark:text-green-400"
+                    : "text-gray-600 dark:text-gray-300"
+                }
+              >
+                Dashboard
+              </NavLink>
+            </li>
           )}
         </ul>
       </div>

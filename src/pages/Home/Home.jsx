@@ -1,9 +1,10 @@
 import React from 'react';
+import PlansSection from './PlansSection';
 
 const Home = () => {
     return (
         <div>
-            this is home page
+            <PlansSection></PlansSection>
         </div>
     );
 };

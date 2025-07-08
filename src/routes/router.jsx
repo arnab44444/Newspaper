@@ -11,6 +11,11 @@ import AddArticle from "../pages/AddArticle/AddArticle";
 import DashboardHome from "../pages/Dashboard/DashboardHome";
 import AddPublisher from "../pages/AddPublisher/AddPublisher";
 import AllArticles from "../pages/AllArticle/AllArticles";
+import SubscriptionSection from "../pages/Subscription/SubscriptionSection";
+import Payment from "../pages/Payment/Payment";
+import PremiumArticles from "../pages/PremiumArticle/PremiumArticles";
+import MyArticles from "../pages/MyArticles/MyArticles";
+import ArticleDetails from "../pages/MyArticles/ArticleDetails";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +42,27 @@ const router = createBrowserRouter([
       {
         path: "all-articles",
         element: <AllArticles></AllArticles>,
+      },
+
+      {
+        path: "subscription",
+        element: <SubscriptionSection></SubscriptionSection>,
+      },
+      {
+        path: "payment/:email",
+        element: <Payment></Payment>,
+      },
+      {
+        path: "premium-article",
+        element: <PremiumArticles></PremiumArticles>,
+      },
+      {
+        path: "my-articles",
+        element: <MyArticles></MyArticles>,
+      },
+      {
+        path: "/articles/:id",
+        element: <ArticleDetails></ArticleDetails>,
       },
 
       //   {
