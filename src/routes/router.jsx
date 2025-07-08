@@ -21,6 +21,7 @@ import AllUsers from "../pages/Dashboard/AllUsers/AllUsers";
 import AdminAllArtcile from "../pages/Dashboard/AdminAllArticle/AdminAllArtcile";
 import UserProfile from "../pages/UserProfile/UserProfile";
 import Forbidden from "../components/Forbidden";
+import AdminRoute from "../provider/AdminRoute";
 
 const router = createBrowserRouter([
   {
@@ -186,19 +187,19 @@ const router = createBrowserRouter([
     children: [
       {
         index: true, // Default route for /dashboard
-        element: <DashboardHome></DashboardHome>,
+        element: <AdminRoute><DashboardHome></DashboardHome></AdminRoute>,
       },
       {
         path: "add-publishers",
-        element: <AddPublisher></AddPublisher>,
+        element: <AdminRoute><AddPublisher></AddPublisher></AdminRoute>,
       },
       {
         path: "all-users",
-        element: <AllUsers></AllUsers>
+        element: <AdminRoute><AllUsers></AllUsers></AdminRoute>,
       },
       {
         path: "admin-all-articles",
-        element: <AdminAllArtcile></AdminAllArtcile>,
+        element: <AdminRoute><AdminAllArtcile></AdminAllArtcile></AdminRoute>,
       }
 
       //   {
