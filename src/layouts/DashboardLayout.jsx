@@ -1,14 +1,20 @@
 import React, { useContext } from "react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router";
-import { FaHome, FaUserEdit, FaSignOutAlt, FaSeedling, FaUsers, FaNewspaper } from "react-icons/fa";
+import {
+  FaHome,
+  FaUserEdit,
+  FaSignOutAlt,
+  FaSeedling,
+  FaUsers,
+  FaNewspaper,
+} from "react-icons/fa";
 import { AuthContext } from "../provider/AuthProvider";
 
 const DashboardLayout = () => {
   const { user, signOutUser, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const activeClass =
-    "bg-cyan-700";
+  const activeClass = "bg-cyan-700";
 
   const handleLogout = async () => {
     try {
@@ -29,18 +35,28 @@ const DashboardLayout = () => {
         {/* Mobile Navbar */}
         <div className="navbar  lg:hidden shadow-lg">
           <div className="flex-none">
-            <label htmlFor="dashboard-drawer" className="btn btn-square btn-ghost text-black">
+            <label
+              htmlFor="dashboard-drawer"
+              className="btn btn-square btn-ghost text-black"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6 stroke-current"
                 fill="none"
                 viewBox="0 0 24 24"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               </svg>
             </label>
           </div>
-          <div className="flex-1 px-4 text-xl font-extrabold text-black tracking-tight">Dashboard</div>
+          <div className="flex-1 px-4 text-xl font-extrabold text-black tracking-tight">
+            Dashboard
+          </div>
         </div>
 
         {/* Outlet Content */}
@@ -60,7 +76,10 @@ const DashboardLayout = () => {
                 VoxNova
               </h2>
               <p className="text-sm mt-1 text-green-200 select-text">
-                Logged in as <span className="font-semibold">{user?.displayName || "Guest"}</span>
+                Logged in as{" "}
+                <span className="font-semibold">
+                  {user?.displayName || "Guest"}
+                </span>
               </p>
             </Link>
 
@@ -113,19 +132,6 @@ const DashboardLayout = () => {
 
           {/* Bottom Buttons */}
           <div className="space-y-3">
-            {/* <NavLink
-              to="/update-profile"
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-3 rounded-md text-lg font-semibold transition ${
-                  isActive
-                    ? "bg-gradient-to-r from-indigo-400 to-indigo-600 text-white shadow-lg"
-                    : "bg-indigo-50 text-indigo-700 hover:bg-indigo-100 hover:text-indigo-900"
-                }`
-              }
-            >
-              <FaUserEdit /> Update Profile
-            </NavLink> */}
-
             <button
               onClick={handleLogout}
               className="flex items-center gap-3 px-4 py-3 w-full bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 transition shadow"
