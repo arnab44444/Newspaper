@@ -22,6 +22,8 @@ import AdminAllArtcile from "../pages/Dashboard/AdminAllArticle/AdminAllArtcile"
 import UserProfile from "../pages/UserProfile/UserProfile";
 import Forbidden from "../components/Forbidden";
 import AdminRoute from "../provider/AdminRoute";
+import BlogSection from "../pages/BlogSection/BlogSection";
+import AboutUs from "../pages/AboutUs/AboutUs";
 
 const router = createBrowserRouter([
   {
@@ -81,6 +83,14 @@ const router = createBrowserRouter([
       {
         path: '/user-profile',
         element: <PrivateRoute><UserProfile></UserProfile></PrivateRoute>,
+      },
+      {
+        path: "/blog",
+        element: <BlogSection></BlogSection>
+      },
+      {
+        path: '/aboutUs',
+        element: <AboutUs></AboutUs>
       }
 
       
