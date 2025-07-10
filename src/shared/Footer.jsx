@@ -1,147 +1,48 @@
-import React, { useContext, useEffect, useState } from "react";
-import { NavLink } from "react-router";
-import { AuthContext } from "../provider/AuthProvider";
-import useAxiosSecure from "../hooks/useAxiosSecure";
+import React from "react";
+import { FaFacebookF, FaTwitter, FaYoutube, FaInstagram } from "react-icons/fa";
 
 const Footer = () => {
-  const { user } = useContext(AuthContext);
-  const [userWithRole, setUserWithRole] = useState(null);
-
-  const axiosSecure = useAxiosSecure();
-
-  useEffect(() => {
-    if (user?.email) {
-      axiosSecure.get(`/users/${user.email}`).then((res) => {
-        setUserWithRole(res.data);
-      });
-    }
-  }, [user, axiosSecure]);
-
-  // Helper for NavLink className
-  const navLinkClass = ({ isActive }) =>
-    isActive
-      ? "text-cyan-400 font-semibold border-b-2 border-cyan-400 pb-0.5"
-      : "text-white hover:text-cyan-300 transition";
-
   return (
-    <footer className="bg-black text-white px-6 py-8 shadow-inner rounded-t-lg select-none">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-        {/* Left: Logo */}
-        <h2 className="text-xl md:text-xl font-bold bg-gradient-to-r from-green-400 via-lime-400 to-green-600 bg-clip-text text-transparent tracking-tight">
+    <footer className="bg-black text-white py-10 mt-16">
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+        
+        {/* Logo & Description */}
+        <div>
+          <h2 className="text-3xl font-bold bg-cyan-700  bg-clip-text text-transparent">
             VoxNova
           </h2>
+          <p className="mt-4 text-sm text-gray-400">
+            VoxNova is your trusted source for real, relevant, and reliable news. Stay connected with the stories that shape your world.
+          </p>
+        </div>
 
-        {/* Center: Navigation Menu */}
-        <nav>
-          <ul className="flex flex-wrap gap-6 text-sm md:text-base">
-            <li>
-              <NavLink to="/" className={navLinkClass}>
-                Home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/all-articles" className={navLinkClass}>
-                All Articles
-              </NavLink>
-            </li>
-
-            {userWithRole?.role === "admin" && (
-              <li>
-                <NavLink to="/dashboard" className={navLinkClass}>
-                  Dashboard
-                </NavLink>
-              </li>
-            )}
-
-            {userWithRole?.role === "user" && (
-              <>
-                <li>
-                  <NavLink to="/add-articles" className={navLinkClass}>
-                    Add Articles
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/subscription" className={navLinkClass}>
-                    Subscription
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/premium-article" className={navLinkClass}>
-                    Premium Articles
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/my-articles" className={navLinkClass}>
-                    My Articles
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/user-profile" className={navLinkClass}>
-                    Profile
-                  </NavLink>
-                </li>
-              </>
-            )}
+        {/* Quick Info (No NavLink) */}
+        <div>
+          <h3 className="text-xl font-semibold mb-3">Information</h3>
+          <ul className="space-y-2 text-gray-400 text-sm">
+            <li>🌍 Worldwide News Coverage</li>
+            <li>📰 Premium & Exclusive Articles</li>
+            <li>🕒 Updated Every Hour</li>
+            <li>📬 support@voxnova.com</li>
           </ul>
-        </nav>
+        </div>
 
-        {/* Right: Social Icons */}
-        <div className="flex space-x-6 text-white text-2xl">
-          <a
-            href="#"
-            aria-label="Twitter"
-            className="hover:text-cyan-300 transition"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="28"
-              height="28"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
-            </svg>
-          </a>
-          <a
-            href="#"
-            aria-label="YouTube"
-            className="hover:text-cyan-300 transition"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="28"
-              height="28"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
-            </svg>
-          </a>
-          <a
-            href="#"
-            aria-label="Facebook"
-            className="hover:text-cyan-300 transition"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="28"
-              height="28"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
-            </svg>
-          </a>
+        {/* Social Links */}
+        <div>
+          <h3 className="text-xl font-semibold mb-3">Follow Us</h3>
+          <div className="flex justify-center md:justify-start space-x-4 mt-2 text-2xl">
+            <a href="https://facebook.com" target="_blank" rel="noreferrer" className="hover:text-cyan-400 transition"><FaFacebookF /></a>
+            <a href="https://twitter.com" target="_blank" rel="noreferrer" className="hover:text-cyan-400 transition"><FaTwitter /></a>
+            <a href="https://youtube.com" target="_blank" rel="noreferrer" className="hover:text-cyan-400 transition"><FaYoutube /></a>
+            <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-cyan-400 transition"><FaInstagram /></a>
+          </div>
         </div>
       </div>
 
-     
+      {/* Bottom Line */}
+      <div className="mt-10 border-t border-gray-800 pt-6 text-center text-sm text-gray-500">
+        © {new Date().getFullYear()} VoxNova. All rights reserved.
+      </div>
     </footer>
   );
 };
