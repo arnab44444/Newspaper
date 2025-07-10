@@ -85,44 +85,71 @@ const Navbar = () => {
             </li>
 
             {userWithRole?.role === "admin" && (
+            <>
+              <li>
+                <NavLink to="/add-articles" className={navLinkClass}>
+                  Add Articles
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink to="/my-articles" className={navLinkClass}>
+                  My Articles
+                </NavLink>
+              </li>
+
               <li>
                 <NavLink to="/dashboard" className={navLinkClass}>
                   Dashboard
                 </NavLink>
               </li>
-            )}
+              {/* <li>
+                <NavLink to="/user-profile" className={navLinkClass}>
+                  <img
+                    src={user.photoURL}
+                    alt="User"
+                    className="w-8 h-8 rounded-full border-2 border-white"
+                  />
+                </NavLink>
+              </li> */}
+            </>
+          )}
 
-            {userWithRole?.role === "user" && (
-              <>
+          {userWithRole?.role === "user" && (
+            <>
+              <li>
+                <NavLink to="/add-articles" className={navLinkClass}>
+                  Add Articles
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/subscription" className={navLinkClass}>
+                  Subscription
+                </NavLink>
+              </li>
+              {isSubscribed && (
                 <li>
-                  <NavLink to="/add-articles" className={navLinkClass}>
-                    Add Articles
+                  <NavLink to="/premium-article" className={navLinkClass}>
+                    Premium Articles
                   </NavLink>
                 </li>
-                <li>
-                  <NavLink to="/subscription" className={navLinkClass}>
-                    Subscription
-                  </NavLink>
-                </li>
-                {isSubscribed && (
-                  <li>
-                    <NavLink to="/premium-article" className={navLinkClass}>
-                      Premium Articles
-                    </NavLink>
-                  </li>
-                )}
-                <li>
-                  <NavLink to="/my-articles" className={navLinkClass}>
-                    My Articles
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/user-profile" className={navLinkClass}>
-                    {user.photoURL}
-                  </NavLink>
-                </li>
-              </>
-            )}
+              )}
+              <li>
+                <NavLink to="/my-articles" className={navLinkClass}>
+                  My Articles
+                </NavLink>
+              </li>
+              {/* <li>
+                <NavLink to="/user-profile" className={navLinkClass}>
+                  <img
+                    src={user.photoURL}
+                    alt="User"
+                    className="w-8 h-8 rounded-full border-2 border-white"
+                  />
+                </NavLink>
+              </li> */}
+            </>
+          )}
           </ul>
         </div>
 
