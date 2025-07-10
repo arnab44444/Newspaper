@@ -71,7 +71,7 @@ const PlansSection = () => {
               </ul>
             </div>
             <button
-              // onClick={() => navigate("/subscription")}
+               onClick={() => navigate("/subscription")}
               className={`${plan.buttonBg} hover:opacity-90 text-white font-semibold py-2 px-4 rounded`}
             >
               {plan.text}

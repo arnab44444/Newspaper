@@ -59,7 +59,7 @@ const UserProfile = () => {
 
   return (
     <div className="max-w-lg mx-auto bg-white dark:bg-base-200 rounded-lg shadow p-6 mt-10">
-      <h2 className="text-2xl font-bold mb-6 text-center text-green-600">Update Your Profile</h2>
+      <h2 className="text-2xl font-bold mb-6 text-center text-cyan-600">Update Your Profile</h2>
 
       {/* ✅ Image Preview */}
       <div className="mb-6 text-center">
@@ -104,7 +104,7 @@ const UserProfile = () => {
 
         <button
           type="submit"
-          className="btn bg-green-600 w-full"
+          className="btn bg-cyan-600 w-full"
           disabled={uploading}
         >
           {uploading ? "Uploading..." : "Update Profile"}

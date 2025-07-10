@@ -8,7 +8,7 @@ const DashboardLayout = () => {
   const navigate = useNavigate();
 
   const activeClass =
-    "bg-gradient-to-r from-green-400 to-green-600 text-white font-semibold shadow-lg";
+    "bg-cyan-700";
 
   const handleLogout = async () => {
     try {
@@ -56,7 +56,7 @@ const DashboardLayout = () => {
         <div className="menu p-6 w-72 max-w-xs bg-black text-white flex flex-col justify-between h-full shadow-xl rounded-tr-xl rounded-br-xl">
           <div>
             <Link to="/" className="block mb-8 px-2">
-              <h2 className="text-3xl font-extrabold bg-gradient-to-r from-lime-400 via-green-400 to-green-600 bg-clip-text text-transparent tracking-wide select-none">
+              <h2 className="text-3xl font-extrabold bg-cyan-700 bg-clip-text text-transparent tracking-wide select-none">
                 VoxNova
               </h2>
               <p className="text-sm mt-1 text-green-200 select-text">

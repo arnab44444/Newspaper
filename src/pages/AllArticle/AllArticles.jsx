@@ -10,11 +10,18 @@ const AllArticles = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useContext(AuthContext);
   const [articles, setArticles] = useState([]);
+  const [publishers, setPublishers] = useState([]);
   const [search, setSearch] = useState("");
   const [publisher, setPublisher] = useState("");
   const [tags, setTags] = useState([]);
-  const [publishers, setPublishers] = useState([]);
   const [hasActiveSubscription, setHasActiveSubscription] = useState(false);
+
+  // Pagination
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(6);
+  const [total, setTotal] = useState(0);
+
+  const totalPages = Math.ceil(total / limit);
 
   const tagOptions = [
     { value: "Technology", label: "Technology" },
@@ -31,41 +38,36 @@ const AllArticles = () => {
     { value: "Art", label: "Art" },
   ];
 
-  // ✅ Check subscription on mount
   useEffect(() => {
     const checkSub = async () => {
       if (user?.email) {
         const res = await axiosSecure.get(`/users/${user.email}`);
         const premiumTaken = res.data?.premiumTaken;
         const now = new Date();
-
-        if (premiumTaken && new Date(premiumTaken) > now) {
-          setHasActiveSubscription(true);
-        } else {
-          setHasActiveSubscription(false);
-        }
+        setHasActiveSubscription(premiumTaken && new Date(premiumTaken) > now);
       }
     };
     checkSub();
-  }, [user]);
+  }, [user,axiosSecure]);
 
-  // ✅ Fetch publishers
   useEffect(() => {
     axiosSecure.get("/publishers").then((res) => setPublishers(res.data));
-  }, []);
+  }, [axiosSecure]);
 
-  // ✅ Fetch articles based on filters
   useEffect(() => {
-    let url = `/articles?`;
-    if (search) url += `search=${search}&`;
-    if (publisher) url += `publisher=${publisher}&`;
-    if (tags.length) url += `tags=${tags.map((t) => t.value).join(",")}&`;
+    let url = `/articles-page?page=${page}&limit=${limit}`;
+    if (search) url += `&search=${search}`;
+    if (publisher) url += `&publisher=${publisher}`;
+    if (tags.length) url += `&tags=${tags.map((t) => t.value).join(",")}`;
 
     axiosSecure
       .get(url)
-      .then((res) => setArticles(res.data))
+      .then((res) => {
+        setArticles(res.data.articles);
+        setTotal(res.data.total);
+      })
       .catch((err) => console.error("Fetch failed", err));
-  }, [search, publisher, tags]);
+  }, [search, publisher, tags, page, limit]);
 
   return (
     <div className="max-w-6xl mx-auto p-4">
@@ -74,12 +76,18 @@ const AllArticles = () => {
         <input
           type="text"
           placeholder="Search title"
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setPage(1);
+          }}
           className="border p-2 w-full rounded"
         />
 
         <select
-          onChange={(e) => setPublisher(e.target.value)}
+          onChange={(e) => {
+            setPublisher(e.target.value);
+            setPage(1);
+          }}
           className="border p-2 w-full rounded"
         >
           <option value="">All Publishers</option>
@@ -93,23 +101,23 @@ const AllArticles = () => {
         <Select
           isMulti
           options={tagOptions}
-          onChange={(val) => setTags(val)}
+          onChange={(val) => {
+            setTags(val);
+            setPage(1);
+          }}
           className="w-full"
         />
       </div>
 
-      {/* 🔄 Articles */}
+      {/* 📄 Articles */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {articles.map((a) => {
           const isLocked = a.isPremium && !hasActiveSubscription;
-
           return (
             <div
               key={a._id}
               className={`flex flex-col border rounded-lg shadow-md overflow-hidden transition ${
-                a.isPremium
-                  ? "border-yellow-400 bg-yellow-50"
-                  : "bg-white"
+                a.isPremium ? "border-yellow-400 bg-yellow-50" : "bg-white"
               }`}
             >
               <img
@@ -148,7 +156,9 @@ const AllArticles = () => {
                   onClick={(e) => {
                     if (isLocked) {
                       e.preventDefault();
-                      toast.error("This is a premium article. Please subscribe to access it.");
+                      toast.error(
+                        "This is a premium article. Please subscribe to access it."
+                      );
                     }
                   }}
                   className={`mt-auto w-full flex justify-center items-center gap-2 py-2 rounded text-sm font-semibold transition ${
@@ -171,6 +181,46 @@ const AllArticles = () => {
             </div>
           );
         })}
+      </div>
+
+      {/* 📄 Pagination Controls */}
+      <div className="mt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="flex gap-2">
+          <button
+            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+            disabled={page === 1}
+            className="btn btn-sm"
+          >
+            Previous
+          </button>
+          <span className="text-sm font-semibold">
+            Page {page} of {totalPages}
+          </span>
+          <button
+            onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+            disabled={page === totalPages}
+            className="btn btn-sm"
+          >
+            Next
+          </button>
+        </div>
+
+        <div>
+          <select
+            value={limit}
+            onChange={(e) => {
+              setLimit(parseInt(e.target.value));
+              setPage(1);
+            }}
+            className="border p-1 rounded"
+          >
+            <option value={3}>3</option>
+            <option value={6}>6</option>
+            <option value={9}>9</option>
+            <option value={12}>12</option>
+          </select>
+          <span className="ml-2 text-sm">per page</span>
+        </div>
       </div>
     </div>
   );
