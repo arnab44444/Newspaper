@@ -8,6 +8,7 @@ import TrendingInMedia from "./TrendingInMedia";
 import TrendingAuthors from "./TredingAuthors";
 import HomeBanner from "./HomeBanner";
 import SubscriptionModal from "./SubscriptionModal";
+import BehindHeadlinesSection from "./BehindHeadlinesSection";
 
 const Home = () => {
   return (
@@ -20,7 +21,7 @@ const Home = () => {
         <PlansSection></PlansSection>
         <TrendingAuthors></TrendingAuthors>
         <TrendingInMedia></TrendingInMedia>
-
+        <BehindHeadlinesSection></BehindHeadlinesSection>
         <ThoughtOfTheDay></ThoughtOfTheDay>
         <StatsSection></StatsSection>
         <SubscriptionModal></SubscriptionModal>

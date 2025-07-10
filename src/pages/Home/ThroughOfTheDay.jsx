@@ -24,7 +24,7 @@ const ThoughtOfTheDay = () => {
   return (
     <section className="bg-gray-100 py-10">
       <div className="max-w-4xl mx-auto px-4 text-center">
-        <h2 className="text-3xl font-bold text-indigo-600 mb-6">
+        <h2 className="text-3xl font-bold text-cyan-600 mb-6">
           🧠 Thought of the Day
         </h2>
         <p className="text-xl italic text-gray-700 transition-opacity duration-500 ease-in-out">
