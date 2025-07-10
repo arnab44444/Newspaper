@@ -23,20 +23,40 @@ const AllArticles = () => {
 
   const totalPages = Math.ceil(total / limit);
 
-  const tagOptions = [
-    { value: "Technology", label: "Technology" },
-    { value: "Politics", label: "Politics" },
-    { value: "Sports", label: "Sports" },
-    { value: "Entertainment", label: "Entertainment" },
-    { value: "Health", label: "Health" },
-    { value: "Business", label: "Business" },
-    { value: "Science", label: "Science" },
-    { value: "World", label: "World" },
-    { value: "Lifestyle", label: "Lifestyle" },
-    { value: "Education", label: "Education" },
-    { value: "Finance", label: "Finance" },
-    { value: "Art", label: "Art" },
-  ];
+ const tagOptions = [
+  { value: "Future", label: "Future" },
+  { value: "Space", label: "Space" },
+  { value: "Social Media", label: "Social Media" },
+  { value: "Virtual Reality", label: "Virtual Reality" },
+  { value: "Artificial Intelligence", label: "Artificial Intelligence" },
+  { value: "Politics", label: "Politics" },
+  { value: "Technology", label: "Technology" },
+  { value: "Sports", label: "Sports" },
+  { value: "Entertainment", label: "Entertainment" },
+  { value: "Education", label: "Education" },
+  { value: "Health", label: "Health" },
+  { value: "Business", label: "Business" },
+  { value: "Science", label: "Science" },
+  { value: "Environment", label: "Environment" },
+  { value: "Travel", label: "Travel" },
+  { value: "Lifestyle", label: "Lifestyle" },
+  { value: "World", label: "World" },
+  { value: "Crime", label: "Crime" },
+  { value: "Fashion", label: "Fashion" },
+  { value: "Food", label: "Food" },
+  { value: "Finance", label: "Finance" },
+  { value: "Opinion", label: "Opinion" },
+  { value: "Culture", label: "Culture" },
+  { value: "Breaking News", label: "Breaking News" },
+  { value: "Art", label: "Art" },
+  { value: "History", label: "History" },
+  { value: "Automotive", label: "Automotive" },
+  { value: "Real Estate", label: "Real Estate" },
+  { value: "Gaming", label: "Gaming" },
+  { value: "Cryptocurrency", label: "Cryptocurrency" },
+  { value: "Weather", label: "Weather" },
+  { value: "Opinion", label: "Opinion" },
+];
 
   useEffect(() => {
     const checkSub = async () => {
