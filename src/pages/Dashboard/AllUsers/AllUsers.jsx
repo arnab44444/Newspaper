@@ -3,6 +3,8 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
+// paggination done
+
 const AllUsers = () => {
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
