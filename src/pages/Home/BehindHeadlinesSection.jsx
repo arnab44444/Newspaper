@@ -83,11 +83,7 @@ const BehindHeadlinesSection = () => {
                 ))}
               </ul>
 
-              {/* <div className="text-right mt-4">
-                <button className="text-cyan-600 text-sm font-semibold hover:underline">
-                  Read Full Analysis →
-                </button>
-              </div> */}
+             
             </div>
           ))}
         </div>
