@@ -59,13 +59,13 @@ const TrendingSlider = () => {
                 <p className="text-sm text-gray-500 mb-3">
                   Views: <span className="font-bold">{article.views}</span>
                 </p>
-
+{/* 
                 <button
                   onClick={() => navigate(`/articles/${article._id}`)}
                   className="mt-auto bg-cyan-600 hover:bg-cyan-700 text-white py-2 rounded-lg text-sm transition duration-300"
                 >
                   Read More
-                </button>
+                </button> */}
               </div>
             </motion.div>
           </div>

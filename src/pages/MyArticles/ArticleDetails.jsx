@@ -40,10 +40,45 @@ const ArticleDetails = () => {
         refetch();
       });
     }
-  }, [article?.authorEmail, user?.email, id, axiosSecure, refetch]);
+  }, [article, user, id, axiosSecure, refetch]);
 
-  if (isPending) return <p className="text-center py-10 text-gray-600">Loading article...</p>;
-  if (isError || !article) return <p className="text-center py-10 text-red-600">Article not found.</p>;
+  // useEffect(() => {
+  //   if (!article || !user) return;
+
+  //   const viewKey = `viewed_${id}`;
+  //   const lastViewed = localStorage.getItem(viewKey);
+  //   const now = Date.now();
+  //   const oneHour = 60 * 60 * 1000;
+
+  //   const isAuthor = user.email === article.authorEmail;
+  //   const recentlyViewed = lastViewed && now - Number(lastViewed) < oneHour;
+
+  //   if (!isAuthor && !recentlyViewed) {
+  //     axiosSecure.patch(`/articles/views/${id}`).then(() => {
+  //       localStorage.setItem(viewKey, now.toString());
+  //       refetch();
+  //     });
+  //   }
+  // }, [article, user, id, axiosSecure, refetch]);
+
+  // useEffect(() => {
+  //   if (!article || !user) return;
+
+  //   const isAuthor = user.email === article.authorEmail;
+  //   if (isAuthor) return;
+
+  //   axiosSecure
+  //     .patch(`/articles/views/${id}`)
+  //     .then(() => refetch())
+  //     .catch((err) => console.log("View tracking error", err));
+  // }, [article, user]);
+
+  if (isPending)
+    return (
+      <p className="text-center py-10 text-gray-600">Loading article...</p>
+    );
+  if (isError || !article)
+    return <p className="text-center py-10 text-red-600">Article not found.</p>;
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
@@ -58,7 +93,7 @@ const ArticleDetails = () => {
 
         <div className="p-8">
           {/* Title */}
-          <h1 className="text-4xl font-extrabold text-gray-900 leading-tight mb-6">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-gray-900 leading-tight mb-6">
             {article.title}
           </h1>
 
@@ -66,12 +101,17 @@ const ArticleDetails = () => {
           <div className="flex flex-wrap items-center gap-6 text-gray-500 text-sm md:text-base mb-8">
             <div className="flex items-center gap-2">
               <FaUser className="text-cyan-600" />
-              <span className="font-medium text-gray-700">{article.authorName}</span>
+              <span className="font-medium text-gray-700">
+                {article.authorName}
+              </span>
             </div>
 
             <div className="flex items-center gap-2">
               <FaClock className="text-cyan-600" />
-              <time dateTime={article.postedDate} className="font-medium text-gray-700">
+              <time
+                dateTime={article.postedDate}
+                className="font-medium text-gray-700"
+              >
                 {new Date(article.postedDate).toLocaleDateString(undefined, {
                   year: "numeric",
                   month: "long",
@@ -82,7 +122,9 @@ const ArticleDetails = () => {
 
             <div className="flex items-center gap-2">
               <FaEye className="text-cyan-600" />
-              <span className="font-medium text-gray-700">{article.views} views</span>
+              <span className="font-medium text-gray-700">
+                {article.views} views
+              </span>
             </div>
 
             <div className="ml-auto text-cyan-700 font-semibold text-sm md:text-base">
