@@ -22,6 +22,7 @@ const Login = () => {
     signInUser(data.email, data.password)
       .then((result) => {
         console.log(result.user);
+        toast.success('Login successfully');
         navigate(from);
       })
       .catch((error) => {
