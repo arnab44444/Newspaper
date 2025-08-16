@@ -78,7 +78,7 @@ const SubscriptionSection = () => {
           </p>
           <button
             onClick={() => setShowModal(true)}
-            className="bg-gradient-to-r from-cyan-600 to-purple-600 text-white font-semibold py-3 px-6 rounded-lg shadow hover:brightness-110 transition"
+            className="bg-cyan-700 hover:bg-cyan-800 text-white font-semibold py-3 px-6 rounded-lg shadow hover:brightness-110 transition"
           >
             🛒 Subscribe Now
           </button>
